@@ -1,7 +1,6 @@
 from django.shortcuts import render , get_object_or_404 , redirect
-from django.http import Http404
 from .models import Product
-from .forms import ProductForm,RawProductForm
+from .forms import ProductForm
 # Create your views here.
 
 
@@ -14,9 +13,21 @@ def product_create_view(request):
  		'form':form
  	}
  	return render(request, "products/product_create.html",context)
+## 3:03:17 inja error mide 
+def product_update_view(request,id=id):
+    obj = get_object_or_404(Product,id=id)
+    form = ProductForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+ 		#form = ProductForm()
+    context = {
+        'form':form
+    }
+    return render(request, "products/product_create.html",context)
 
-def product_detail_view(request):
-	obj = Product.objects.get(id=1)
+
+def product_detail_view(request,id=id):
+	obj = get_object_or_404(Product, id=id)
 	#context = {
 	#	'title':obj.title,
 	#	'description':obj.description,
